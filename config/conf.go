@@ -1,12 +1,18 @@
 package config
 
 var (
-	//新增短链限制 每分钟 /min
+	//Storage mode options:MySQL/gob
+	StoreMode = ""
+
+	//Optional if you choose MySQL StoreMode
+	MySQLURL      = "127.0.0.1:3306"
+	MySQLUser     = ""
+	MySQLPassword = ""
+	MySQLDatabase = ""
+
+	//New shortURL rate limit per minute
 	IssueRateLimit = 30
-	//MurmurHash Bit
+
+	//MurmurHash Bit options：32/64
 	MurmurBit = 32
-	//磁盘空间限制 M
-	DiskLimit = 512
-	//内存空间限制 M
-	MemoryLimit = 1024
 )
