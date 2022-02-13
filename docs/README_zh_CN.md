@@ -1,4 +1,4 @@
-# GoShorURL
+# GoShortURL
 由 Go 语言撰写的短链服务，适合私有部署。
 
 # 发号器

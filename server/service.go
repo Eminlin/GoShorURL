@@ -1,8 +1,8 @@
 package server
 
 import (
+	"GoShortURL/common"
 	"GoShortURL/config"
-	"GoShortURL/pkg"
 	"fmt"
 	"log"
 
@@ -12,7 +12,7 @@ import (
 func Run() {
 	go WebRun()
 	url := "https://www.eminlin.com"
-	if !pkg.CheckURL(url) {
+	if !common.CheckURL(url) {
 		log.Println("not url")
 		return
 	}
@@ -29,9 +29,9 @@ func DupliCheck(url string) bool {
 func getMurmur(text string) string {
 	switch config.MurmurBit {
 	case 32:
-		return pkg.Uint32ToB62(murmur3.Sum32([]byte(text)))
+		return common.Uint32ToB62(murmur3.Sum32([]byte(text)))
 	case 64:
-		return pkg.Uint64ToB62(murmur3.Sum64([]byte(text)))
+		return common.Uint64ToB62(murmur3.Sum64([]byte(text)))
 	default:
 		panic("Config MurmurBit can only be 32 or 64")
 	}

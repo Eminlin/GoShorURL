@@ -1,4 +1,4 @@
-package pkg
+package common
 
 var version string = "0.1"
 

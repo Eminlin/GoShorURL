@@ -1,4 +1,4 @@
-# GoShorURL
+# GoShortURL
 Work in process... 🚧
 
 # Readme
