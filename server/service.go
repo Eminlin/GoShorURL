@@ -11,12 +11,14 @@ import (
 
 func Run() {
 	go WebRun()
-	url := "https://www.eminlin.com"
+	url := ""
 	if !common.CheckURL(url) {
-		log.Println("not url")
+		log.Println("It seems doesn't look like a link")
 		return
 	}
-	fmt.Println(getMurmur(url))
+	m := getMurmur(url)
+	fmt.Println(m)
+
 	select {}
 }
 

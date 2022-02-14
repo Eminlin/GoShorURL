@@ -1,18 +1,21 @@
 package config
 
 var (
-	//Storage mode options:MySQL/gob
-	StoreMode = ""
-
-	//Optional if you choose MySQL StoreMode
+	Domain        = "hatchurl.com"
+	SSL           = true
+	SubPath       = ""
 	MySQLURL      = "127.0.0.1:3306"
 	MySQLUser     = ""
 	MySQLPassword = ""
 	MySQLDatabase = ""
+	RedisURL      = "127.0.0.1:6639"
 
-	//New shortURL rate limit per minute
+	//ShortURL generation rate limit per minute
 	IssueRateLimit = 30
 
 	//MurmurHash Bit options：32/64
 	MurmurBit = 32
+
+	//
+	DuplicateURL = false
 )
