@@ -1,8 +1,11 @@
 package server
 
-import "net/http"
+import (
+	"GoShortURL/common"
+	"net/http"
+)
 
 func WebRun() {
 	http.Handle("/", http.NotFoundHandler())
-	http.ListenAndServe(":1818", nil)
+	http.ListenAndServe(":"+common.AppConf.App.APIPort, nil)
 }

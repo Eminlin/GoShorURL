@@ -1,6 +1,7 @@
 package main
 
 import (
+	"GoShortURL/common"
 	"GoShortURL/server"
 )
 
@@ -9,5 +10,5 @@ func init() {
 }
 
 func main() {
-	server.Run()
+	server.NewServer(common.NewLog()).Run()
 }
