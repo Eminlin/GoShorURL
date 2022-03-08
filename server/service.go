@@ -2,7 +2,7 @@ package server
 
 import (
 	"GoShortURL/common"
-	"fmt"
+	"net/http"
 
 	"github.com/spaolacci/murmur3"
 )
@@ -18,14 +18,26 @@ func NewServer(log *common.Log) *Server {
 }
 
 func (s *Server) Run() {
-	url := ""
-	if !common.CheckURL(url) {
-		s.Log.Fatalln("It seems doesn't look like a link")
-		return
+	// url := ""
+	// if !common.CheckURL(url) {
+	// 	s.Log.Errorf("It seems doesn't look like a link:%s\n", url)
+	// 	return
+	// }
+	// m := getMurmur(url)
+	// fmt.Println(m)
+	s.WebRun()
+}
+
+func (s *Server) WebRun() {
+	http.HandleFunc("/", index)
+	http.HandleFunc("/manage", manage)
+	http.HandleFunc("/manage/add", add)
+
+	s.Log.Infof("web start at http://127.0.0.1:%s", common.AppConf.App.APIPort)
+
+	if err := http.ListenAndServe(":"+common.AppConf.App.APIPort, nil); err != nil {
+		s.Log.Errorf("listen and serve err:%s\n", err.Error())
 	}
-	m := getMurmur(url)
-	fmt.Println(m)
-	WebRun()
 }
 
 //DupliCheck Duplicate URL data detection

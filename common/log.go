@@ -144,6 +144,10 @@ func (e *Log) Errorln(args ...interface{}) {
 	l.Errorln(e.getParamsln(args))
 }
 
+func (e *Log) Errorf(format string, args ...interface{}) {
+	l.Errorf(e.getParamsf(format), args...)
+}
+
 func (e *Log) Fatalln(args ...interface{}) {
 	l.Fatalln(e.getParamsln(args))
 }
