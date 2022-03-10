@@ -12,6 +12,7 @@ type App struct {
 		HostPort, User, Password, Database string
 	}
 	Redis struct {
-		HostPort, Password string
+		HostPort, Password, Key string
+		DB                      int
 	}
 }

@@ -1,25 +1,23 @@
 [app]
     APIPort = "1818"
-
     Host = "https://hatchurl.com"
     DuplicateURL = false
-
     #ShortURL generation rate limit per minute
     IssueRateLimit = 30 
-
     #MurmurHash Bit options：32/64
     MurmurBit = 32
-
     LogLevel = "debug"
 
 [mysql]
-    HostPort      = "127.0.0.1:3306"
+    HostPort = "127.0.0.1:3306"
     User     = ""
     Password = ""
     Database = ""
 
 [redis]
-    HostPort      = "127.0.0.1:6639"
-    Password=""
+    HostPort = "127.0.0.1:6639"
+    Password = ""
+    DB = 0
+    Key = "GoShortURL_"
 
 

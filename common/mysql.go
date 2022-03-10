@@ -11,13 +11,13 @@ var DB *gorm.DB
 
 func init() {
 	var err error
-	DB, err = NewMySQLCon()
+	DB, err = newMySQLCon()
 	if err != nil {
 		log.Fatalf("connect mysql err:%s", err.Error())
 	}
 }
 
-func NewMySQLCon() (*gorm.DB, error) {
+func newMySQLCon() (*gorm.DB, error) {
 	c := AppConf.MySQL
 	url := c.User + ":" + c.Password + "@tcp" + "(" + c.HostPort + ")" + c.Database
 	db, err := gorm.Open("mysql", url)
