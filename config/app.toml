@@ -7,6 +7,7 @@
     #MurmurHash Bit options：32/64
     MurmurBit = 32
     LogLevel = "debug"
+    NotFoundPage = ""
 
 [mysql]
     HostPort = "127.0.0.1:3306"
@@ -15,9 +16,9 @@
     Database = ""
 
 [redis]
-    HostPort = "127.0.0.1:6639"
+    HostPort = "127.0.0.1:6379"
     Password = ""
     DB = 0
-    Key = "GoShortURL_"
+    Key = "GoShortURL"
 
 

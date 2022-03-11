@@ -6,7 +6,7 @@ type App struct {
 		APIPort, Host             string
 		SSL, DuplicateURL         bool
 		IssueRateLimit, MurmurBit int16
-		LogLevel                  string
+		LogLevel, NotFoundPage    string
 	}
 	MySQL struct {
 		HostPort, User, Password, Database string

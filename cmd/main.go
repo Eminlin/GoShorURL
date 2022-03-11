@@ -10,5 +10,5 @@ func init() {
 }
 
 func main() {
-	server.NewServer(common.NewLog()).Run()
+	server.NewServer(common.NewLog()).WebRun()
 }

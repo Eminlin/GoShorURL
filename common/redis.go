@@ -15,5 +15,8 @@ func newRedisClient() *redis.Client {
 		Password: c.Password,
 		DB:       c.DB,
 	})
+	if err := RedisClient.Ping().Err(); err != nil {
+		panic(err)
+	}
 	return RedisClient
 }
