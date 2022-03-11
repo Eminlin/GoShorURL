@@ -32,11 +32,6 @@ func (s *Server) WebRun() {
 	}
 }
 
-//DupliCheck Duplicate URL data detection
-func DupliCheck(url string) bool {
-	return false
-}
-
 //getMurmur
 func getMurmur(text string) string {
 	switch common.AppConf.App.MurmurBit {
