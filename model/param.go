@@ -1,7 +1,8 @@
 package model
 
 type AddParam struct {
-	URL string `json:"url"`
+	URL    string `json:"url"`
+	Remark string `json:"remark"`
 }
 
 type RedisHSet struct {

@@ -2,6 +2,7 @@ package server
 
 import (
 	"GoShortURL/common"
+	"GoShortURL/model"
 	"errors"
 	"net/http"
 	"time"
@@ -57,24 +58,34 @@ func getMurmurWithSeed(text string) string {
 }
 
 //buildShortKey
-func buildShortKey(maxTryTimes int, url string) (shortKey string, err error) {
+func buildShortKey(maxTryTimes int, url string) (status bool, shortKey string, err error) {
 	shortKey = getMurmur(url)
 	for i := 0; i <= maxTryTimes; i++ {
 		if common.RedisClient.HExists(common.AppConf.Redis.Key, shortKey).Val() {
 			cmdRes, err := common.RedisClient.HMGet(common.AppConf.Redis.Key, shortKey).Result()
 			if err != nil {
-				return "", err
+				return false, "", err
 			}
 			if cmdRes[0].(string) == url {
-				return shortKey, nil
+				return true, shortKey, nil
 			}
 			shortKey = getMurmurWithSeed(url)
 			continue
 		}
+		urlTable := model.URLTable{}
+		err := common.DB.Table(common.AppConf.MySQL.URLTable).
+			Select("origin_url").Where("short_key = ?", shortKey).Find(&urlTable).Limit(1).Error
+		if err != nil {
+			log.Errorln(err.Error())
+			continue
+		}
+		if urlTable.OriginURL != "" {
+			return true, shortKey, nil
+		}
 		break
 	}
 	if shortKey == "" {
-		return "", errors.New("buildShortKey maximum number of times")
+		return false, "", errors.New("buildShortKey maximum number of times")
 	}
-	return shortKey, nil
+	return false, shortKey, nil
 }

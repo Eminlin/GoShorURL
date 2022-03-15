@@ -10,6 +10,7 @@ type App struct {
 	}
 	MySQL struct {
 		HostPort, User, Password, Database string
+		URLTable, ManageTable              string
 	}
 	Redis struct {
 		HostPort, Password, Key string

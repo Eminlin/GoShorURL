@@ -19,7 +19,7 @@ func init() {
 
 func newMySQLCon() (*gorm.DB, error) {
 	c := AppConf.MySQL
-	url := c.User + ":" + c.Password + "@tcp" + "(" + c.HostPort + ")" + c.Database
+	url := c.User + ":" + c.Password + "@tcp" + "(" + c.HostPort + ")/" + c.Database
 	db, err := gorm.Open("mysql", url)
 	if err != nil {
 		log.Fatalf("invalid database source err:%s", err.Error())
