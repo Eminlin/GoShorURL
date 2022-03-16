@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/jinzhu/gorm"
 	"github.com/spaolacci/murmur3"
 )
 
@@ -72,14 +73,7 @@ func buildShortKey(maxTryTimes int, url string) (status bool, shortKey string, e
 			shortKey = getMurmurWithSeed(url)
 			continue
 		}
-		urlTable := model.URLTable{}
-		err := common.DB.Table(common.AppConf.MySQL.URLTable).
-			Select("origin_url").Where("short_key = ?", shortKey).Find(&urlTable).Limit(1).Error
-		if err != nil {
-			log.Errorln(err.Error())
-			continue
-		}
-		if urlTable.OriginURL != "" {
+		if checkNotExistAndSet(shortKey) {
 			return true, shortKey, nil
 		}
 		break
@@ -88,4 +82,33 @@ func buildShortKey(maxTryTimes int, url string) (status bool, shortKey string, e
 		return false, "", errors.New("buildShortKey maximum number of times")
 	}
 	return false, shortKey, nil
+}
+
+//checkNotExistAndSet check short key when not found in redis
+func checkNotExistAndSet(path string) bool {
+	var urlTable model.URLTable
+	err := common.DB.Table(common.AppConf.MySQL.URLTable).
+		Select("origin_url").Where("short_key = ?", path).
+		Find(&urlTable).Limit(1).Error
+	if err != nil {
+		if err.Error() == gorm.ErrRecordNotFound.Error() {
+			return false
+		}
+		log.Errorln(err.Error())
+		return false
+	}
+	if urlTable.OriginURL == "" {
+		return false
+	}
+	boolCmd := common.RedisClient.HSet(common.AppConf.Redis.Key, path, urlTable.OriginURL)
+	if boolCmd.Err() != nil {
+		log.Errorln(boolCmd.Err())
+		return false
+	}
+	boolCmd = common.RedisClient.HSet(common.AppConf.Redis.Key, path+"_visit", 0)
+	if boolCmd.Err() != nil {
+		log.Errorln(boolCmd.Err())
+		return false
+	}
+	return true
 }

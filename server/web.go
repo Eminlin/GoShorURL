@@ -9,8 +9,6 @@ import (
 	"net/http"
 	"time"
 	"unicode"
-
-	"github.com/jinzhu/gorm"
 )
 
 var log common.Log
@@ -53,35 +51,6 @@ func index(w http.ResponseWriter, r *http.Request) {
 		log.Errorln(err)
 		return
 	}
-}
-
-//checkNotExistAndSet check short key when not found in redis
-func checkNotExistAndSet(path string) bool {
-	var urlTable model.URLTable
-	err := common.DB.Table(common.AppConf.MySQL.URLTable).
-		Select("origin_url").Where("short_key = ?", path).
-		Find(&urlTable).Limit(1).Error
-	if err != nil {
-		if err.Error() == gorm.ErrRecordNotFound.Error() {
-			return false
-		}
-		log.Errorln(err.Error())
-		return false
-	}
-	if urlTable.OriginURL == "" {
-		return false
-	}
-	boolCmd := common.RedisClient.HSet(common.AppConf.Redis.Key, path, urlTable.OriginURL)
-	if boolCmd.Err() != nil {
-		log.Errorln(boolCmd.Err())
-		return false
-	}
-	boolCmd = common.RedisClient.HSet(common.AppConf.Redis.Key, path+"_visit", 0)
-	if boolCmd.Err() != nil {
-		log.Errorln(boolCmd.Err())
-		return false
-	}
-	return true
 }
 
 //add new short url
@@ -208,6 +177,7 @@ func del(w http.ResponseWriter, r *http.Request) {
 		model.CommonErrResp(w, "del err")
 		return
 	}
+	//todo del mysql data
 	model.CommonSuccessResp(w, "success")
 }
 
